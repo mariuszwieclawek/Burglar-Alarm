@@ -5,8 +5,9 @@
 #include "i2c.h"
 #include "lcd1602.h"
 
-unsigned int keyread = 0;
+
 enum menu{START,SW1,SW2,SW3,SW4,SW5,SW6,SW7,SW8,SW9,SW10,SW11,SW12,SW13,SW14,SW15,SW16};
+extern char keyread;
 extern char password[];
 
 

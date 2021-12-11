@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Alarm.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Alarm.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Sat Dec 11 16:16:18 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Sat Dec 11 22:38:28 2021
 <BR><P>
 <H3>Maximum Stack Usage =        368 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1100,12 +1100,12 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_Write8
 </UL>
-<BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enter_passwd
-<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_passwd
+<BR>[Called By]<UL><LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_passwd
 <LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;armed
+<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enter_passwd
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;alarm
 <LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;admin_setup
+<LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[a8]"></a>LCD1602_Init</STRONG> (Thumb, 74 bytes, Stack size 8 bytes, lcd1602.o(i.LCD1602_Init))
@@ -1124,12 +1124,12 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_Write8
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;typing_passwd
-<LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enter_passwd
 <LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_passwd
 <LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;armed
+<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enter_passwd
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;alarm
 <LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;admin_setup
+<LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[ab]"></a>LCD1602_SetCursor</STRONG> (Thumb, 36 bytes, Stack size 16 bytes, lcd1602.o(i.LCD1602_SetCursor))
@@ -1138,11 +1138,11 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_Write8
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;typing_passwd
-<LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_passwd
 <LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;armed
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;alarm
 <LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;admin_setup
+<LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[ac]"></a>LCD1602_Write4</STRONG> (Thumb, 74 bytes, Stack size 16 bytes, lcd1602.o(i.LCD1602_Write4))
@@ -1195,84 +1195,84 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__printf
 </UL>
 
-<P><STRONG><a name="[ad]"></a>admin_setup</STRONG> (Thumb, 86 bytes, Stack size 8 bytes, main.o(i.admin_setup))
+<P><STRONG><a name="[ad]"></a>admin_setup</STRONG> (Thumb, 86 bytes, Stack size 8 bytes, alarm.o(i.admin_setup))
 <BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = admin_setup &rArr; armed &rArr; alarm &rArr; enter_passwd &rArr; typing_passwd &rArr; LCD1602_SetCursor &rArr; LCD1602_Write8 &rArr; LCD1602_Write4 &rArr; PCF8574_Write &rArr; I2C_Write &rArr; i2c_wait
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_keypad
+<BR>[Calls]<UL><LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_passwd
+<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;armed
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_keypad
 <LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_SetCursor
 <LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_Print
 <LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_ClearAll
-<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_passwd
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;armed
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[b1]"></a>alarm</STRONG> (Thumb, 262 bytes, Stack size 8 bytes, main.o(i.alarm))
+<P><STRONG><a name="[b1]"></a>alarm</STRONG> (Thumb, 262 bytes, Stack size 8 bytes, alarm.o(i.alarm))
 <BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = alarm &rArr; enter_passwd &rArr; typing_passwd &rArr; LCD1602_SetCursor &rArr; LCD1602_Write8 &rArr; LCD1602_Write4 &rArr; PCF8574_Write &rArr; I2C_Write &rArr; i2c_wait
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_keypad
+<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enter_passwd
+<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;contact_vibration
 <LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_SetCursor
 <LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_Print
 <LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_ClearAll
-<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enter_passwd
-<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;contact_vibration
 </UL>
-<BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;armed
+<BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;armed
+<LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[af]"></a>armed</STRONG> (Thumb, 226 bytes, Stack size 16 bytes, main.o(i.armed))
+<P><STRONG><a name="[af]"></a>armed</STRONG> (Thumb, 226 bytes, Stack size 16 bytes, alarm.o(i.armed))
 <BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = armed &rArr; alarm &rArr; enter_passwd &rArr; typing_passwd &rArr; LCD1602_SetCursor &rArr; LCD1602_Write8 &rArr; LCD1602_Write4 &rArr; PCF8574_Write &rArr; I2C_Write &rArr; i2c_wait
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_keypad
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_SetCursor
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_Print
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_ClearAll
 <LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enter_passwd
 <LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;contact_vibration
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;alarm
+<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_SetCursor
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_Print
+<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_ClearAll
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;admin_setup
 </UL>
 
-<P><STRONG><a name="[b0]"></a>change_passwd</STRONG> (Thumb, 212 bytes, Stack size 24 bytes, main.o(i.change_passwd))
+<P><STRONG><a name="[b0]"></a>change_passwd</STRONG> (Thumb, 214 bytes, Stack size 24 bytes, alarm.o(i.change_passwd))
 <BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = change_passwd &rArr; typing_passwd &rArr; LCD1602_SetCursor &rArr; LCD1602_Write8 &rArr; LCD1602_Write4 &rArr; PCF8574_Write &rArr; I2C_Write &rArr; i2c_wait
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_keypad
+<BR>[Calls]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;typing_passwd
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_keypad
+<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;contact_vibration
 <LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_SetCursor
 <LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_Print
 <LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_ClearAll
-<LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;typing_passwd
-<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;contact_vibration
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;admin_setup
 </UL>
 
-<P><STRONG><a name="[b2]"></a>contact_vibration</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, main.o(i.contact_vibration))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = contact_vibration &rArr; read_keypad
+<P><STRONG><a name="[b2]"></a>contact_vibration</STRONG> (Thumb, 28 bytes, Stack size 4 bytes, klaw.o(i.contact_vibration))
+<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = contact_vibration &rArr; read_keypad
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_keypad
 </UL>
-<BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enter_passwd
-<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_passwd
+<BR>[Called By]<UL><LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_passwd
 <LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;armed
+<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enter_passwd
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;alarm
+<LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[b3]"></a>enter_passwd</STRONG> (Thumb, 112 bytes, Stack size 16 bytes, main.o(i.enter_passwd))
+<P><STRONG><a name="[b3]"></a>enter_passwd</STRONG> (Thumb, 114 bytes, Stack size 16 bytes, alarm.o(i.enter_passwd))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = enter_passwd &rArr; typing_passwd &rArr; LCD1602_SetCursor &rArr; LCD1602_Write8 &rArr; LCD1602_Write4 &rArr; PCF8574_Write &rArr; I2C_Write &rArr; i2c_wait
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_keypad
+<BR>[Calls]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;typing_passwd
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_keypad
+<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;contact_vibration
 <LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_Print
 <LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_ClearAll
-<LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;typing_passwd
-<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;contact_vibration
 </UL>
-<BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;armed
+<BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;armed
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;alarm
+<LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[b5]"></a>i2c_clr_IICIF</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, i2c.o(i.i2c_clr_IICIF))
@@ -1328,6 +1328,10 @@ Global Symbols
 <LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rtc_init
 <LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;read_keypad
 <LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init
+<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enter_passwd
+<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;contact_vibration
+<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;alarm
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;admin_setup
 <LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART0_Init
 <LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_SetCursor
 <LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_Print
@@ -1335,10 +1339,6 @@ Global Symbols
 <LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_ClearAll
 <LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_Backlight
 <LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Klaw_Init
-<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enter_passwd
-<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;contact_vibration
-<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;alarm
-<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;admin_setup
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
 </UL>
@@ -1346,13 +1346,13 @@ Global Symbols
 <P><STRONG><a name="[ae]"></a>read_keypad</STRONG> (Thumb, 100 bytes, Stack size 8 bytes, klaw.o(i.read_keypad))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = read_keypad
 </UL>
-<BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR>[Called By]<UL><LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_passwd
+<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;armed
 <LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enter_passwd
 <LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;contact_vibration
-<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_passwd
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;armed
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;alarm
 <LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;admin_setup
+<LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[b9]"></a>rtc_init</STRONG> (Thumb, 78 bytes, Stack size 4 bytes, rtcclock.o(i.rtc_init))
@@ -1388,14 +1388,14 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[b4]"></a>typing_passwd</STRONG> (Thumb, 58 bytes, Stack size 8 bytes, main.o(i.typing_passwd))
+<P><STRONG><a name="[b4]"></a>typing_passwd</STRONG> (Thumb, 58 bytes, Stack size 8 bytes, alarm.o(i.typing_passwd))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = typing_passwd &rArr; LCD1602_SetCursor &rArr; LCD1602_Write8 &rArr; LCD1602_Write4 &rArr; PCF8574_Write &rArr; I2C_Write &rArr; i2c_wait
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_SetCursor
 <LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD1602_Print
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enter_passwd
-<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_passwd
+<BR>[Called By]<UL><LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_passwd
+<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enter_passwd
 </UL>
 
 <P><STRONG><a name="[66]"></a>_get_lc_time</STRONG> (Thumb, 44 bytes, Stack size 8 bytes, lc_time_c.o(locale$$code))
