@@ -31,13 +31,6 @@ void alarm(void);
 void admin_setup(void);
 
 
-/* This function reducing contact vibration of switches*/
-void contact_vibration(void){
-	while(read_keypad()); // Waiting for the button state to change
-	DELAY(80)  // Wait until the contacts vibration is stopped
-}
-
-
 /* The function which shows the procedure of entering the password on the LCD1602, unset alarm */
 void typing_passwd(char cursor_pos)
 {	

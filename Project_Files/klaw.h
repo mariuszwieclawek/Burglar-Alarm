@@ -31,6 +31,7 @@ Keyboard 4x4 tact switches init and function to read which switch is pushed
 
 
 void Klaw_Init(void);		// Ports init
-unsigned int read_keypad(void);		//The function returns the values ??of the pressed key in the order 1-16. For S1 return 1; For S8 return 8;
+unsigned int read_keypad(void);		//The function returns the values of the pressed key in the order 1-16. For S1 return 1; For S8 return 8;
+void contact_vibration(void); // This function reducing contact vibration of switches
 
 #endif

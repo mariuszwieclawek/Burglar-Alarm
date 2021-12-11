@@ -1,5 +1,7 @@
 #include "klaw.h"
+#include "frdm_bsp.h"
 
+/* Ports init */
 void Klaw_Init(void)
 {
 	SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK;		// Enable port A
@@ -24,6 +26,8 @@ void Klaw_Init(void)
 	PTB->PDOR &= ~R4_MASK;   // First row set to low voltage
 }
 
+
+/* The function returns the values of the pressed key in the order 1-16. For S1 return 1; For S8 return 8; */
 unsigned int read_keypad(void) 
 {
 	unsigned int row,col,key;
@@ -47,3 +51,12 @@ unsigned int read_keypad(void)
 	}
 	return 0;
 }
+
+
+/* This function reducing contact vibration of switches*/
+void contact_vibration(void)
+{
+	while(read_keypad()); // Waiting for the button state to change
+	DELAY(80)  // Wait until the contacts vibration is stopped
+}
+
