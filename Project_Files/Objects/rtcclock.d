@@ -1,0 +1,14 @@
+.\objects\rtcclock.o: RTCclock.c
+.\objects\rtcclock.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\rtcclock.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\rtcclock.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\rtcclock.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\time.h
+.\objects\rtcclock.o: RTCclock.h
+.\objects\rtcclock.o: C:\Users\Mariusz\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL05Z4.h
+.\objects\rtcclock.o: C:\Users\Mariusz\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h
+.\objects\rtcclock.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\rtcclock.o: C:\Users\Mariusz\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h
+.\objects\rtcclock.o: C:\Users\Mariusz\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h
+.\objects\rtcclock.o: C:\Users\Mariusz\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h
+.\objects\rtcclock.o: C:\Users\Mariusz\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\system_MKL05Z4.h
+.\objects\rtcclock.o: frdm_bsp.h

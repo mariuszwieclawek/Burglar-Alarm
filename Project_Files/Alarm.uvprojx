@@ -408,6 +408,11 @@
               <FileType>1</FileType>
               <FilePath>.\lcd1602.c</FilePath>
             </File>
+            <File>
+              <FileName>RTCclock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\RTCclock.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
