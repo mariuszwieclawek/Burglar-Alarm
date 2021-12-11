@@ -413,6 +413,16 @@
               <FileType>1</FileType>
               <FilePath>.\RTCclock.c</FilePath>
             </File>
+            <File>
+              <FileName>alarm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\alarm.c</FilePath>
+            </File>
+            <File>
+              <FileName>alarm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\alarm.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

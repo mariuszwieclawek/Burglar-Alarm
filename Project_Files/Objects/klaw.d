@@ -7,3 +7,4 @@
 .\objects\klaw.o: C:\Users\Mariusz\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h
 .\objects\klaw.o: C:\Users\Mariusz\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h
 .\objects\klaw.o: C:\Users\Mariusz\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\system_MKL05Z4.h
+.\objects\klaw.o: frdm_bsp.h
