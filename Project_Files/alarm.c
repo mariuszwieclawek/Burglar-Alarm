@@ -1,10 +1,10 @@
-//#include "MKL05Z4.h"
+/* Functions for handling the alarm */
+
 #include "frdm_bsp.h"
 #include "alarm.h"
 #include "klaw.h"
 #include "i2c.h"
 #include "lcd1602.h"
-
 
 enum menu{START,SW1,SW2,SW3,SW4,SW5,SW6,SW7,SW8,SW9,SW10,SW11,SW12,SW13,SW14,SW15,SW16};
 extern char keyread;
@@ -167,6 +167,7 @@ char* change_passwd(char pass[])
 	}
 }
 
+/* The function allows you to go to the administrator menu */
 void admin_setup(void)
 {
 	LCD1602_ClearAll();
@@ -195,7 +196,7 @@ void admin_setup(void)
 }
 
 
-/* Alarm signaling function on diode, buzzer and 7seg displays // LED and buzzer on one port */
+/* Alarm signaling function */
 void alarm(void)
 {	
 	PORTB->PCR[8] |= PORT_PCR_MUX(1);					// Selection of the function to be performed by the given pin of port B
