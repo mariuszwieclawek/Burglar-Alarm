@@ -57,7 +57,7 @@ I (C:\Users\Mariusz\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\c
 I (C:\Users\Mariusz\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D43D42)
 I (C:\Users\Mariusz\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\system_MKL05Z4.h)(0x55FBBCD8)
 I (i2c.h)(0x5FBFDF5A)
-F (.\RTCclock.c)(0x61B4B234)(--c99 -c --cpu Cortex-M0+ -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\_FRDM-KL05Z-IC:\Users\Mariusz\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Mariusz\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DMKL05Z32xxx4 -D_RTE_-o .\objects\rtcclock.o --omf_browse .\objects\rtcclock.crf --depend .\objects\rtcclock.d)
+F (.\RTCclock.c)(0x61B4C050)(--c99 -c --cpu Cortex-M0+ -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\_FRDM-KL05Z-IC:\Users\Mariusz\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Mariusz\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DMKL05Z32xxx4 -D_RTE_-o .\objects\rtcclock.o --omf_browse .\objects\rtcclock.crf --depend .\objects\rtcclock.d)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x602577DE)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x602577D4)
