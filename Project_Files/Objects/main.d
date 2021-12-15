@@ -16,3 +16,4 @@
 .\objects\main.o: i2c.h
 .\objects\main.o: lcd1602.h
 .\objects\main.o: RTCclock.h
+.\objects\main.o: alarm.h
