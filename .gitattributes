@@ -1,6 +1,4 @@
 *.htm linguist-detectable=false
 *.html linguist-detectable=false
 *.d linguist-detectable=false
-*.asm linguist-detectable=false
 *.s linguist-detectable=false
-Project_Files/RTE/Device/MKL05Z32xxx4/startup_MKL05Z4.s
