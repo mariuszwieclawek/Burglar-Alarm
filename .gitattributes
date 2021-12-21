@@ -1,1 +1,4 @@
-
+*.htm linguist-detectable=false
+*.html linguist-detectable=false
+*.d linguist-detectable=false
+*.asm linguist-detectable=false
