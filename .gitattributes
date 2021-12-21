@@ -1,4 +1,4 @@
 *.htm linguist-detectable=false
 *.html linguist-detectable=false
 *.d linguist-detectable=false
-*.c linguist-detectable=false
+*.s linguist-detectable=false
