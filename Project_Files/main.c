@@ -26,7 +26,6 @@ char password[] = {1,2,3,4};
 
 enum menu{START,SW1,SW2,SW3,SW4,SW5,SW6,SW7,SW8,SW9,SW10,SW11,SW12,SW13,SW14,SW15,SW16};
 
-
 int main (void)
 {
 	char check; // Check if password is correct
@@ -34,7 +33,7 @@ int main (void)
 	UART0_Init();		// Initialization ports
 	Klaw_Init();
 	init(); 
-	rtc_init();
+	//rtc_init();
 	LCD1602_Init();
 	
 	// Display on LCD
@@ -77,65 +76,115 @@ int main (void)
 							alarm();		// Go to function of alarm
 							break;
 						}
-						else if (check == 1) // Good password then go to the admin menu
+						else if (check == 1) // Correct password then go to the admin menu
 						{
 							admin_setup();
 							break;
 						}		
 					}		
 				}
-				else if (check == 1) // Good password then go to the admin menu
+				else if (check == 1) // Correct password then go to the admin menu
 				{
 					admin_setup();
 					break;
 				}	
 				
 
-				case SW2:	
-					LCD1602_ClearAll();
-					LCD1602_Print("TO DO...");
-					// TO DO....
+			case SW2:	
+				LCD1602_ClearAll();
+				LCD1602_Print("TO DO...");
+				// TO DO....
 				
 				
-				case SW3:	
-					LCD1602_ClearAll();
-					LCD1602_Print("TO DO...");
-					// TO DO....
+			case SW3:	
+				LCD1602_ClearAll();
+				LCD1602_Print("TO DO...");
+				// TO DO....
 				
 				
-				case SW4:
-					time_write(45, 01, 15, 11, 12, 2021, 7); // Write to data structure of time 
-					LCD1602_ClearAll();
-					
-					while(1)
+			case SW4:
+				LCD1602_ClearAll();
+				LCD1602_Print("S1:SET CLOCK");
+				LCD1602_SetCursor(0,1);
+				LCD1602_Print("S2:TIME   S16:EX");
+				while(1)
+				{
+					keyread = read_keypad();
+					if (keyread==SW1) // set the time
 					{
-						time_read(rtc_read());
-			
-						sprintf(display,"%s%c",asctime(&data),CRET);
-			
-						for(int i=0;display[i]!=0;i++)
-						{
-							while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter empty?
-							UART0->D = display[i];		// Send to UART
-						}
+						int hour=0,min=0,sec=0;
+						int mon_d,month,week_d = 1;
+						int year = 2021;
 						
-						sprintf(display,"%d %d %d",data.tm_wday,data.tm_mon,data.tm_mday);
-						LCD1602_SetCursor(0,0);
-						LCD1602_Print(display);
-						sprintf(display,"%02d:%02d:%02d",data.tm_hour,data.tm_min,data.tm_sec);
+						LCD1602_ClearAll();
+						LCD1602_Print("S1:+ S2:- S3:OK");
 						LCD1602_SetCursor(0,1);
-						LCD1602_Print(display);
+						LCD1602_Print("HOUR:      S16EX");
+						hour = set_hour();
+							
+						LCD1602_Print("S1:+ S2:- S3:OK");
+						LCD1602_SetCursor(0,1);
+						LCD1602_Print("MIN:       S16EX");
+						min = set_minute();
+							
+						LCD1602_Print("S1:+ S2:- S3:OK");
+						LCD1602_SetCursor(0,1);
+						LCD1602_Print("SEC:       S16EX");
+						sec = set_second();
+							
+						LCD1602_Print("S1:+ S2:- S3:OK");
+						LCD1602_SetCursor(0,1);
+						LCD1602_Print("MON_D:     S16EX");
+						mon_d = set_monthday();
 						
-						keyread = read_keypad();
-						if (keyread==SW16) 		// Cancelling the alarm 
-						{
-							LCD1602_ClearAll();
-							break;
-						}
+						LCD1602_Print("S1:+ S2:- S3:OK");
+						LCD1602_SetCursor(0,1);
+						LCD1602_Print("MON:       S16EX");
+						month = set_month();
+							
+						LCD1602_Print("S1:+ S2:- S3:OK");
+						LCD1602_SetCursor(0,1);
+						LCD1602_Print("YEAR:      S16EX");
+						year = set_year();
+							
+						LCD1602_Print("S1:+ S2:- S3:OK");
+						LCD1602_SetCursor(0,1);
+						LCD1602_Print("WEEK_D:    S16EX");
+						week_d = set_weekday();
+							
+						time_write(hour, min, sec, mon_d, month, year, week_d); // Write to data structure of time 
+						time_read(rtc_read()); // read actuall time 
+						break;
 					}
-					// TO DO....
-					
-		}
-	
+					else if(keyread==SW2) // display time 
+					{
+						LCD1602_ClearAll();
+						while(1)
+						{
+							time_read(rtc_read()); // read actuall time 
+								
+							sprintf(display,"%02d.%02d.%04dr",data.tm_mday,data.tm_mon+1,data.tm_year+1900);
+							LCD1602_SetCursor(0,0);
+							LCD1602_Print(display);
+							sprintf(display,"%02d:%02d:%02d",data.tm_hour,data.tm_min,data.tm_sec);
+							LCD1602_SetCursor(0,1);
+							LCD1602_Print(display);
+								
+							keyread = read_keypad();
+							if (keyread==SW16) 		// Cancelling the alarm 
+							{
+								LCD1602_ClearAll();
+								break;
+							}
+						}
+						break;
+					}
+					else if(keyread==SW16) // Exit from this menu
+					{
+						LCD1602_ClearAll();
+						break;
+					}
+				}//end while(1)	
+		}//end switch
 	}
 }

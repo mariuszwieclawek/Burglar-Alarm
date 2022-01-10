@@ -11,4 +11,7 @@
 .\objects\rtcclock.o: C:\Users\Mariusz\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h
 .\objects\rtcclock.o: C:\Users\Mariusz\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h
 .\objects\rtcclock.o: C:\Users\Mariusz\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\system_MKL05Z4.h
+.\objects\rtcclock.o: klaw.h
+.\objects\rtcclock.o: i2c.h
 .\objects\rtcclock.o: frdm_bsp.h
+.\objects\rtcclock.o: lcd1602.h
