@@ -5,10 +5,29 @@
 #include "klaw.h"
 #include "i2c.h"
 #include "lcd1602.h"
+#include "ADC.h"
+#include "TPM.h"
+
+#define ALARM_SENS 1
 
 enum menu{START,SW1,SW2,SW3,SW4,SW5,SW6,SW7,SW8,SW9,SW10,SW11,SW12,SW13,SW14,SW15,SW16};
 extern char keyread;
 extern char password[];
+
+float adc_volt_coeff = ((float)(((float)2.91) / 4095) );			// Wspólczynnik korekcji wyniku, w stosunku do napiecia referencyjnego przetwornika
+uint8_t wynik_ok=0;
+uint16_t temp;
+float	wynik;
+
+void ADC0_IRQHandler()
+{	
+	temp = ADC0->R[0];	// Odczyt danej i skasowanie flagi COCO
+	if(!wynik_ok)				// Sprawdz, czy wynik skonsumowany przez petle glówna
+	{
+		wynik = temp;			// Wyslij nowa dana do petli glównej
+		wynik_ok=1;
+	}
+}
 
 
 /* The function which shows the procedure of entering the password on the LCD1602, unset alarm */
@@ -66,8 +85,6 @@ char enter_passwd(void)
 /* The function that is responsible for arming our alarm */
 void armed(void)
 {	
-	PORTB->PCR[9] |= PORT_PCR_MUX(1);					// Selection of the function to be performed by the given pin of port B
-	PTB->PDDR |= (1<<9);	// Set to 1 bit 9 - role as outputs
 	LCD1602_ClearAll();
 	LCD1602_Print("ALARM IS ARMED");
 	LCD1602_SetCursor(0,1);
@@ -75,13 +92,22 @@ void armed(void)
 	char exit; // using to exit infinite loop
 	while(1)
 	{
-		PTB->PCOR|= (1<<9);	// Diode ON
 		keyread = read_keypad();	// Reading from 4x4 tact switches and write to keyread
-		
+
+		if(wynik_ok) // If the value from converter is ready
+		{
+			wynik = wynik*adc_volt_coeff;		// Value as a voltage
+			if(wynik>ALARM_SENS)		// When the value from light sensor is above the maximum 
+			{
+				alarm(); // ALARM
+				break;
+			}
+			wynik_ok=0;	
+		}
+	
 		if (keyread==SW16) // Disarming if you press SW16
 		{
 			LCD1602_ClearAll();
-			PTB->PSOR|= (1<<9);	// Diode OFF
 			contact_vibration();
 			char check = enter_passwd(); // Enter the password and check if its correct or incorrect
 			
@@ -199,6 +225,12 @@ void admin_setup(void)
 /* Alarm signaling function */
 void alarm(void)
 {	
+	uint16_t	mod_curr;
+	uint16_t	ampl;
+	int up_down = 1;
+	int divider =64;
+	int freq = 200000;
+	
 	PORTB->PCR[8] |= PORT_PCR_MUX(1);					// Selection of the function to be performed by the given pin of port B
 	PORTB->PCR[10] |= PORT_PCR_MUX(1);				
 	PTB->PDDR |= (1<<8);	// Set to 1 bit 9 - role as outputs
@@ -210,18 +242,36 @@ void alarm(void)
 	while(1)
 	{
 		PTB->PCOR|= (1<<8);	// Diode ON
-		DELAY(200)
+		DELAY(20)
 		PTB->PSOR|= (1<<8);	// Diode OFF
 		PTB->PCOR|= (1<<10);	// Diode ON
-		DELAY(200)
+		DELAY(20)
 		PTB->PSOR|= (1<<10);	// Diode OFF
+		
+		if(up_down)
+		{
+			mod_curr=freq/divider;
+			TPM0->MOD = mod_curr;
+			divider+=1;
+			if(divider==128)
+				up_down = 0;
+			TPM0->CONTROLS[2].CnV = mod_curr*0.5;	// Nowa wartosc kreujaca wspólczynnik wypelnienia PWM
+		}
+		else if(up_down == 0)
+		{
+			mod_curr=freq/divider;
+			TPM0->MOD = mod_curr;
+			divider-=1;
+			if(divider==64)
+				up_down = 1;
+			TPM0->CONTROLS[2].CnV = mod_curr*0.5;	// Nowa wartosc kreujaca wspólczynnik wypelnienia PWM
+		}
+		//DELAY(20)
+		
 		keyread = read_keypad();
 		if (keyread==SW16) 		// Cancelling the alarm 
 		{
 			contact_vibration();
-			LCD1602_ClearAll();
-			PTB->PSOR|= (1<<8);	// Diode OFF
-			PTB->PSOR|= (1<<10);	// Diode OFF
 			char check = enter_passwd();
 				if (check==0)	//wrong password still alarming
 				{	
@@ -232,7 +282,13 @@ void alarm(void)
 					continue;
 				}
 				else if (check == 1) //if good password stop alarming
+				{
+					LCD1602_ClearAll();
+					PTB->PSOR|= (1<<8);	// Diode OFF
+					PTB->PSOR|= (1<<10);	// Diode OFF
+					TPM0->CONTROLS[2].CnV = 0;
 					break; 
+				}			
 		}
 	}
 }

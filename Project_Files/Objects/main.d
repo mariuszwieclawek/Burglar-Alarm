@@ -11,9 +11,11 @@
 .\objects\main.o: C:\Users\Mariusz\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h
 .\objects\main.o: C:\Users\Mariusz\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\system_MKL05Z4.h
 .\objects\main.o: frdm_bsp.h
-.\objects\main.o: uart0.h
-.\objects\main.o: klaw.h
 .\objects\main.o: i2c.h
 .\objects\main.o: lcd1602.h
+.\objects\main.o: uart0.h
+.\objects\main.o: ADC.h
+.\objects\main.o: klaw.h
 .\objects\main.o: RTCclock.h
 .\objects\main.o: alarm.h
+.\objects\main.o: TPM.h

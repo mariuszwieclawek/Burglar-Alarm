@@ -10,12 +10,14 @@
 
 #include "MKL05Z4.h"
 #include "frdm_bsp.h"
-#include "uart0.h"
-#include "klaw.h"
 #include "i2c.h"
 #include "lcd1602.h"
+#include "uart0.h"
+#include "ADC.h"
+#include "klaw.h"
 #include "RTCclock.h"
 #include "alarm.h"
+#include "TPM.h"
 
 #define CRET	0xd		// Carriage return
 
@@ -26,22 +28,40 @@ char password[] = {1,2,3,4};
 
 enum menu{START,SW1,SW2,SW3,SW4,SW5,SW6,SW7,SW8,SW9,SW10,SW11,SW12,SW13,SW14,SW15,SW16};
 
+
 int main (void)
 {
 	char check; // Check if password is correct
+	uint8_t	kal_error; // For converter A/D calibration
 	
 	UART0_Init();		// Initialization ports
 	Klaw_Init();
 	init(); 
-	//rtc_init();
+	rtc_init();
 	LCD1602_Init();
+	PWM_Init();				// Inicjalizacja licznika TPM0 (PWM „Low-true pulses”)
+
+	LCD1602_Backlight(TRUE);
+	
+	kal_error=ADC_Init();				// Initialization and calibration A/C converter
+	if(kal_error)
+	{	
+		LCD1602_SetCursor(0,0);
+		LCD1602_Print("CALIBRATION");
+		LCD1602_SetCursor(0,0);
+		LCD1602_Print("ERROR");
+		while(1);									// calibration is not correct
+	}
+	
+	ADC0->SC1[0] = ADC_SC1_AIEN_MASK | ADC_SC1_ADCH(3);		// First trigger ADC0 on channel 8 and enable the interrupt
+	
 	
 	// Display on LCD
-	LCD1602_Backlight(TRUE);
 	LCD1602_Print("ALARM UNARMED!");
 	LCD1602_SetCursor(0,1);
 	LCD1602_Print("S1 TO CONTINUE");
 	
+		
 	while(PTA->PDIR&C1_MASK);		// Wait to press SW1
 	contact_vibration();		// Reduce contact vibration
 	LCD1602_ClearAll();
@@ -97,9 +117,43 @@ int main (void)
 				
 				
 			case SW3:	
-				LCD1602_ClearAll();
-				LCD1602_Print("TO DO...");
-				// TO DO....
+				check = enter_passwd();
+				if (check==0)	//wrong password
+				{
+					LCD1602_ClearAll();
+					LCD1602_Print("WRONG PASSWORD");
+					DELAY(1000)
+					break;
+				}
+				else if (check == 1) // Correct password then go to the bluetooth menu
+				{
+					LCD1602_ClearAll();
+					LCD1602_Print("BLUETOOTH");
+					LCD1602_SetCursor(0,1);
+					LCD1602_Print("S1:ON     S2:OFF");
+					while(1)
+					{
+						keyread = read_keypad();
+						if (keyread==SW1) // TURN ON BLUETOOTH MODULE
+						{
+							LCD1602_ClearAll();
+							//TO DO...
+							break;
+						}
+						else if(keyread==SW2) // TURN OFF BLUETOOTH MODULE
+						{
+							LCD1602_ClearAll();
+							// TO DO...
+							break;
+						}
+						else if(keyread==SW16) // Exit from this menu
+						{
+							LCD1602_ClearAll();
+							break;
+						}
+					}//end while(1)	
+					break;
+				}	
 				
 				
 			case SW4:
@@ -117,39 +171,39 @@ int main (void)
 						int year = 2021;
 						
 						LCD1602_ClearAll();
-						LCD1602_Print("S1:+ S2:- S3:OK");
+						LCD1602_Print("S1:+ S2:-  S3:OK");
 						LCD1602_SetCursor(0,1);
-						LCD1602_Print("HOUR:      S16EX");
+						LCD1602_Print("HOUR:");
 						hour = set_hour();
 							
-						LCD1602_Print("S1:+ S2:- S3:OK");
+						LCD1602_Print("S1:+ S2:-  S3:OK");
 						LCD1602_SetCursor(0,1);
-						LCD1602_Print("MIN:       S16EX");
+						LCD1602_Print("MIN:");
 						min = set_minute();
 							
-						LCD1602_Print("S1:+ S2:- S3:OK");
+						LCD1602_Print("S1:+ S2:-  S3:OK");
 						LCD1602_SetCursor(0,1);
-						LCD1602_Print("SEC:       S16EX");
+						LCD1602_Print("SEC:");
 						sec = set_second();
 							
-						LCD1602_Print("S1:+ S2:- S3:OK");
+						LCD1602_Print("S1:+ S2:-  S3:OK");
 						LCD1602_SetCursor(0,1);
-						LCD1602_Print("MON_D:     S16EX");
+						LCD1602_Print("MON_D:");
 						mon_d = set_monthday();
 						
-						LCD1602_Print("S1:+ S2:- S3:OK");
+						LCD1602_Print("S1:+ S2:-  S3:OK");
 						LCD1602_SetCursor(0,1);
-						LCD1602_Print("MON:       S16EX");
+						LCD1602_Print("MON:");
 						month = set_month();
 							
-						LCD1602_Print("S1:+ S2:- S3:OK");
+						LCD1602_Print("S1:+ S2:-  S3:OK");
 						LCD1602_SetCursor(0,1);
-						LCD1602_Print("YEAR:      S16EX");
+						LCD1602_Print("YEAR:");
 						year = set_year();
 							
-						LCD1602_Print("S1:+ S2:- S3:OK");
+						LCD1602_Print("S1:+ S2:-  S3:OK");
 						LCD1602_SetCursor(0,1);
-						LCD1602_Print("WEEK_D:    S16EX");
+						LCD1602_Print("WEEK_D:");
 						week_d = set_weekday();
 							
 						time_write(hour, min, sec, mon_d, month, year, week_d); // Write to data structure of time 

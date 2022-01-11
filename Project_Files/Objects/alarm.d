@@ -11,3 +11,5 @@
 .\objects\alarm.o: klaw.h
 .\objects\alarm.o: i2c.h
 .\objects\alarm.o: lcd1602.h
+.\objects\alarm.o: ADC.h
+.\objects\alarm.o: TPM.h

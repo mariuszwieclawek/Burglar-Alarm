@@ -22,15 +22,24 @@ Dialog DLL:      TARMCM1.DLL V1.14.4.0
  
 <h2>Project:</h2>
 C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Burglar-Alarm\Project_Files\Alarm.uvprojx
-Project File Date:  12/11/2021
+Project File Date:  01/11/2022
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'FRDM-KL05Z'
-compiling RTCclock.c...
+compiling alarm.c...
+alarm.c(57): warning:  #1293-D: assignment in condition
+  		while(!(keyread = read_keypad())); // Waiting for a keyboard button to be pressed
+alarm.c(81): warning:  #940-D: missing return statement at end of non-void function "enter_passwd" 
+  }
+alarm.c(163): warning:  #1293-D: assignment in condition
+  		while(!(keyread = read_keypad())); // Waiting for a keyboard button to be pressed
+alarm.c(229): warning:  #177-D: variable "ampl"  was declared but never referenced
+  	uint16_t	ampl;
+alarm.c: 4 warnings, 0 errors
 linking...
-Program Size: Code=6356 RO-data=244 RW-data=104 ZI-data=400  
-".\Objects\Alarm.axf" - 0 Error(s), 0 Warning(s).
+Program Size: Code=8940 RO-data=244 RW-data=116 ZI-data=908  
+".\Objects\Alarm.axf" - 0 Error(s), 4 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -56,8 +65,8 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.5.0
 
    * Component: Keil::Device:Startup:1.0.0
-      Source file:   Device\Source\system_MKL05Z4.c
       Source file:   Device\Source\ARM\startup_MKL05Z4.s
+      Source file:   Device\Source\system_MKL05Z4.c
 Build Time Elapsed:  00:00:01
 </pre>
 </body>

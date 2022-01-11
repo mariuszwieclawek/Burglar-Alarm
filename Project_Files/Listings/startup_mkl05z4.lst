@@ -27,26 +27,26 @@ ARM Macro Assembler    Page 1
    16 00000000         ;   <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
    17 00000000         ; </h>
    18 00000000         
-   19 00000000 00000100 
+   19 00000000 00000300 
                        Stack_Size
-                               EQU              0x00000100
+                               EQU              0x00000300
    20 00000000         
    21 00000000                 AREA             STACK, NOINIT, READWRITE, ALIGN
 =3
    22 00000000         Stack_Mem
                                SPACE            Stack_Size
-   23 00000100         __initial_sp
-   24 00000100         
-   25 00000100         
-   26 00000100         ; <h> Heap Configuration
-   27 00000100         ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
-   28 00000100         ; </h>
-   29 00000100         
-   30 00000100 00000000 
+   23 00000300         __initial_sp
+   24 00000300         
+   25 00000300         
+   26 00000300         ; <h> Heap Configuration
+   27 00000300         ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
+   28 00000300         ; </h>
+   29 00000300         
+   30 00000300 00000000 
                        Heap_Size
                                EQU              0x00000000
-   31 00000100         
-   32 00000100                 AREA             HEAP, NOINIT, READWRITE, ALIGN=
+   31 00000300         
+   32 00000300                 AREA             HEAP, NOINIT, READWRITE, ALIGN=
 3
    33 00000000         __heap_base
    34 00000000         Heap_Mem
@@ -567,7 +567,7 @@ ARM Macro Assembler    Page 9
               00000000 
               00000000 
               00000000 
-              00000100 
+              00000300 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M0+ --apcs=inter
 work --depend=.\objects\startup_mkl05z4.d -o.\objects\startup_mkl05z4.o -I.\RTE
@@ -600,7 +600,7 @@ Symbol: Stack_Mem
       At line 370 in file RTE\Device\MKL05Z32xxx4\startup_MKL05Z4.s
       At line 372 in file RTE\Device\MKL05Z32xxx4\startup_MKL05Z4.s
 
-__initial_sp 00000100
+__initial_sp 00000300
 
 Symbol: __initial_sp
    Definitions
@@ -1253,7 +1253,7 @@ Absolute symbols
       At line 34 in file RTE\Device\MKL05Z32xxx4\startup_MKL05Z4.s
       At line 371 in file RTE\Device\MKL05Z32xxx4\startup_MKL05Z4.s
 
-Stack_Size 00000100
+Stack_Size 00000300
 
 Symbol: Stack_Size
    Definitions
