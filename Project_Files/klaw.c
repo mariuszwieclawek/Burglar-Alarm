@@ -6,21 +6,21 @@ void Klaw_Init(void)
 {
 	SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK;		// Enable port A
 	/* Columns as inputs */
-	PORTA->PCR[C1] |= PORT_PCR_MUX(1);
-	PORTA->PCR[C2] |= PORT_PCR_MUX(1);
-	PORTA->PCR[C3] |= PORT_PCR_MUX(1);
-	PORTA->PCR[C4] |= PORT_PCR_MUX(1);
-	PORTA->PCR[C1] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK; //The PE bit enables the use of a secondary resistor, and the PS bit selects how this resistor is to be connected.
-	PORTA->PCR[C2] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK;
-	PORTA->PCR[C3] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK;
-	PORTA->PCR[C4] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK;
+	PORTA->PCR[COL1] |= PORT_PCR_MUX(1);
+	PORTA->PCR[COL2] |= PORT_PCR_MUX(1);
+	PORTA->PCR[COL3] |= PORT_PCR_MUX(1);
+	PORTA->PCR[COL4] |= PORT_PCR_MUX(1);
+	PORTA->PCR[COL1] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK; //The PE bit enables the use of a secondary resistor, and the PS bit selects how this resistor is to be connected.
+	PORTA->PCR[COL2] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK;
+	PORTA->PCR[COL3] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK;
+	PORTA->PCR[COL4] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK;
 	
 	/* Rows as outputs */
 	SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK;		// Enable port B
-	PORTB->PCR[R1] |= PORT_PCR_MUX(1);
-	PORTB->PCR[R2] |= PORT_PCR_MUX(1);
-	PORTB->PCR[R3] |= PORT_PCR_MUX(1);
-	PORTB->PCR[R4] |= PORT_PCR_MUX(1);
+	PORTB->PCR[ROW1] |= PORT_PCR_MUX(1);
+	PORTB->PCR[ROW2] |= PORT_PCR_MUX(1);
+	PORTB->PCR[ROW3] |= PORT_PCR_MUX(1);
+	PORTB->PCR[ROW4] |= PORT_PCR_MUX(1);
 	PTB->PDDR |= R1_MASK|R2_MASK|R3_MASK|R4_MASK;	// Set to 1 bits 6, 7, 11, 13 - role as output
 	PTB->PDOR |= R1_MASK|R2_MASK|R3_MASK;	// Initially, the three outputs are set to high voltage.
 	PTB->PDOR &= ~R4_MASK;   // First row set to low voltage

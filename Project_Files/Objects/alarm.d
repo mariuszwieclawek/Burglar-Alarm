@@ -1,4 +1,7 @@
 .\objects\alarm.o: alarm.c
+.\objects\alarm.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\alarm.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\alarm.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\alarm.o: frdm_bsp.h
 .\objects\alarm.o: C:\Users\Mariusz\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL05Z4.h
 .\objects\alarm.o: C:\Users\Mariusz\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h
@@ -13,3 +16,5 @@
 .\objects\alarm.o: lcd1602.h
 .\objects\alarm.o: ADC.h
 .\objects\alarm.o: TPM.h
+.\objects\alarm.o: RTCclock.h
+.\objects\alarm.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\time.h

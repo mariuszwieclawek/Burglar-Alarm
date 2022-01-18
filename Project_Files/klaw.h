@@ -8,15 +8,15 @@ Keyboard 4x4 tact switches init and function to read which switch is pushed
 
 #include "MKL05Z4.h"
 
-#define C1 9		// first column 4x4 tact switches
-#define C2 10
-#define C3 11
-#define C4 12
+#define COL1 9		// first column 4x4 tact switches
+#define COL2 10
+#define COL3 11
+#define COL4 12
 
-#define R1 6		// first row 4x4 tact switches
-#define R2 7
-#define R3 11
-#define R4 13
+#define ROW1 6		// first row 4x4 tact switches
+#define ROW2 7
+#define ROW3 11
+#define ROW4 13
 
 
 #define C1_MASK	(1<<9)		// Mask for C4 column
