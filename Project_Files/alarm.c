@@ -12,7 +12,7 @@
 #include "TPM.h"
 #include "RTCclock.h"
 
-#define ALARM_SENS 1 // Light intensity voltage level, when is above alarm start
+#define ALARM_SENS 2 // Light intensity voltage level, when is above alarm start
 #define CRET	0xd		// Carriage return
 #define LF	0xa		// Enter
 
@@ -124,6 +124,7 @@ char enter_user_passwd(void)
 	
 	char i,cursor_pos;
 	char err=0;
+	char err_admin=0;
 	
 	for(i=0,cursor_pos=0; i<4; i++,cursor_pos++)
 	{
@@ -136,17 +137,17 @@ char enter_user_passwd(void)
 			break;
 		}
 				
-		if(keyread != user_password[i]) err++; // check if the password is correct, unless err+
+		if(keyread != user_password[i]) err++; // check if the user password is correct, unless err++
+		if(keyread != password[i]) err_admin++; // check if the admin password is correct, unless err_addmin++
 				
 		if(i==3) // last digit
 		{ 
-			switch(err)
-			{
-				case 0: // correct pass
-					return 1;
-				default: // incorrect pass
-					return 0;
-			}
+			if((err == 0) && (err_admin > 0))
+				return 1;
+			else if((err > 0) && (err_admin == 0))
+				return 1;
+			else
+				return 0;
 		}
 		else
 			typing_passwd(cursor_pos); // unarmed alarm, password input progress
@@ -156,8 +157,8 @@ char enter_user_passwd(void)
 
 
 
-/* The function that is responsible for arming our alarm */
-void armed(void)
+/* The function that is responsible for arming our alarm as a administrator. Only the administrator can deactivate alarm */
+void armed_admin(void)
 {	
 	LCD1602_ClearAll();
 	LCD1602_Print("ALARM IS ARMED");
@@ -339,6 +340,189 @@ void armed(void)
 }
 
 
+/* The function that is responsible for arming our alarm as a user. Administrator and user can deactivate alarm */
+void armed_user(void)
+{	
+	LCD1602_ClearAll();
+	LCD1602_Print("ALARM IS ARMED");
+	LCD1602_SetCursor(0,1);
+	LCD1602_Print("S16:OFF");
+	
+	if(bluetooth_on) // When bluetooth is on
+	{
+		sprintf(display,"ALARM IS ARMED%c%c",CRET,LF); 
+		for(int i=0;display[i]!=0;i++)
+		{
+			while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter empty?
+			UART0->D = display[i];		// send to user
+		}
+		sprintf(display,"Type ALARMOFF%c%c",CRET,LF); 
+		for(int i=0;display[i]!=0;i++)
+		{
+			while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter empty?
+			UART0->D = display[i];		// send to user
+		}
+	}
+	
+	char exit=0; // using to exit infinite loop
+	rx_FULL=0;
+	rx_buf_pos=0;
+	
+	// ACCELEROMETR SETUP
+	sens=0;	// Sensivity select: 0 - 2g; 1 - 4g; 2 - 8g
+	I2C_WriteReg(0x1d, 0x2a, 0x0);	// ACTIVE=0 - standby
+	I2C_WriteReg(0x1d, 0xe, sens);	 		// Set the sensitivity according to the sense variable
+	I2C_WriteReg(0x1d, 0x2a, 0x1);	 		// ACTIVE=1 - active state
+	
+	while(1)
+	{
+		time_read(RTC_Read()); // read actuall time 
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////TURN OFF ALARM STANDBY FROM THE TERMINAL OF THE BLUETOOTH DEVICE//////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		if(rx_FULL && bluetooth_on)		// If is data ready and bluetooth turned on?
+		{
+			if(too_long) // when the text you put is too long
+			{
+				for(int i=0;Too_Long[i]!=0;i++)
+				{
+					while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter ready?
+					UART0->D = Too_Long[i]; // inform the user about this error
+				}
+				while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter ready?
+				UART0->D = LF;		// enter
+				while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter ready?
+				UART0->D = CRET;		// carriage return
+				too_long=0;
+			}
+			else
+			{
+				if(strcmp (rx_buf,ALARM_OFF)==0) // Turn off the alarm standby
+				{
+					LCD1602_ClearAll();
+					LCD1602_Print("ALARM TURNS OFF");
+					sprintf(display,"ALARM TURNS OFF%c%c",CRET,LF); 
+					for(int i=0;display[i]!=0;i++)
+					{
+						while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter ready?
+						UART0->D = display[i];		// inform the user if the alarm has been disabled
+					}
+					exit = 1;
+					DELAY(1000)
+				}
+				else
+				{
+					for(int i=0;Error[i]!=0;i++)	// the user entered the wrong command
+					{
+						while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter ready?
+						UART0->D = Error[i];
+					}
+					while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter ready?
+					UART0->D = LF;		// enter
+					while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter ready?
+					UART0->D = CRET;		// carriage return
+				}
+			}
+			rx_buf_pos=0;
+			rx_FULL=0;	// consumed data
+		}		
+		
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////TURN ON ALARM SIGNALLING WHEN IT IS TOO BRIGHT///////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		if(result_ok) // If the value from converter is ready
+		{
+			result = result*adc_volt_coeff;		// Value as a voltage
+			if(result>ALARM_SENS)		// When the value from light sensor is above the maximum 
+			{
+				alarm(); // ALARM
+				break;
+			}
+			result_ok=0;	
+		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////TURN ON ALARM SIGNALLING WHEN YOU MOVE DEVICE////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		I2C_ReadReg(0x1d, 0x0, &status);
+		status&=ZYXDR_Mask;
+		if(status)	// Is the data readable?
+		{
+			I2C_ReadRegBlock(0x1d, 0x1, 6, arrayXYZ);
+			X=((double)((int16_t)((arrayXYZ[0]<<8)|arrayXYZ[1])>>2)/(4096>>sens));
+			Y=((double)((int16_t)((arrayXYZ[2]<<8)|arrayXYZ[3])>>2)/(4096>>sens));
+			Z=((double)((int16_t)((arrayXYZ[4]<<8)|arrayXYZ[5])>>2)/(4096>>sens));
+			
+			if(fabs(X)>1.5 || fabs(Y)>1.5 || fabs(Z)>1.5)
+			{
+				alarm();
+				break;
+			}
+		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////TURN OFF ALARM////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		keyread = read_keypad();	// Reading from 4x4 tact switches and write to keyread
+		if (keyread==SW16) // Disarming if you press SW16
+		{
+			LCD1602_ClearAll();
+			contact_vibration();
+			char check = enter_user_passwd(); // Enter the password and check if its correct or incorrect
+			
+			switch(check)
+			{
+				case 0: // wrong password
+					for(char chances = 1; chances != 4; chances++)	// you have 3 chances to put correct password, then alarm will start
+					{
+						LCD1602_ClearAll();
+						LCD1602_Print("WRONG PASSWD");
+						LCD1602_SetCursor(0,1);
+						LCD1602_Print("TRY AGAIN");
+						DELAY(1000)
+						check = enter_user_passwd();
+						
+						if (check == 2) //typing cancelled
+						{
+							LCD1602_ClearAll();
+							LCD1602_Print("ALARM IS ARMED");
+							LCD1602_SetCursor(0,1);
+							LCD1602_Print("S16:OFF");
+							exit = 0;
+							break;
+						}			
+						else if(chances==2 && check ==0)	//wrong password after 3 chances start alarming
+						{
+							alarm();
+							exit = 1;
+							break;
+						}
+						else if (check == 1) //correct password
+						{
+							exit = 1;
+							break;
+						}						
+					}
+					break;
+				case 1: // correct password
+					exit = 1;
+					break;
+				case 2: // typing cancelled
+					LCD1602_ClearAll();
+					LCD1602_Print("ALARM IS ARMED");
+					LCD1602_SetCursor(0,1);
+					LCD1602_Print("S16:OFF");
+					exit = 0;
+					break;
+			} // end switch(check)
+		} // end if (keyread==SW16)
+		if(exit == 1) 
+			break;
+	} //end while
+}
+
+
 /* This function is responsible for changing password*/
 char* change_passwd(char pass[])
 {
@@ -399,7 +583,7 @@ void admin_setup(void)
 		keyread = read_keypad();
 		if (keyread==SW1) //start alarm
 		{
-			armed();
+			armed_admin();
 			break;
 		}
 		else if(keyread==SW2) // change password
@@ -420,12 +604,19 @@ void user_setup(void)
 {
 	LCD1602_ClearAll();
 	LCD1602_Print("S1:START ALARM");
+	LCD1602_SetCursor(0,1);
+	LCD1602_Print("S2:CHANGE PASSWD");
 	while(1)
 	{
 		keyread = read_keypad();
 		if (keyread==SW1) //start alarm
 		{
-			armed();
+			armed_user();
+			break;
+		}
+		else if(keyread==SW2) // change password
+		{
+			change_passwd(user_password);
 			break;
 		}
 		else if(keyread==SW16) // Exit from this menu

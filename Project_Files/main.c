@@ -19,8 +19,9 @@
 #include "alarm.h"
 #include "TPM.h"
 
+#define END 0x21 // !
 #define CRET	0xd		// Carriage return
-#define LF	0xa		// Enter
+#define LF 0xa // enter
 
 char display[]={0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20}; //buffer
 
@@ -71,20 +72,14 @@ void UART0_IRQHandler()
 		tempo=UART0->D;	// Reading the value from the receiver's buffer and clearing the RDRF flag
 		if(!rx_FULL)
 		{
-			if(tempo!=CRET)
+			if(tempo!=END)
 			{
-				if(!too_long)	// If the string is too long, ignore the rest of the characters
-				{
-					rx_buf[rx_buf_pos] = tempo;	// Complete the command
-					rx_buf_pos++;
-					if(rx_buf_pos==16)
-						too_long=1;		// Too long a string
-				}
+				rx_buf[rx_buf_pos] = tempo;	// Complete the command
+				rx_buf_pos++;	
 			}
 			else
 			{
-				if(!too_long)	// If the string is too long, drop the tables
-					rx_buf[rx_buf_pos] = 0;
+				rx_buf[rx_buf_pos] = 0;
 				rx_FULL=1;
 			}
 		}
@@ -126,27 +121,18 @@ int main (void)
 	ADC0->SC1[0] = ADC_SC1_AIEN_MASK | ADC_SC1_ADCH(3);		// First trigger ADC0 on channel 8 and enable the interrupt
 	
 	// Start message on terminal
-	sprintf(display,"BLUETOOTH OFF%c%c",CRET,LF); 
+	sprintf(display,"BLUETOOTH OFF"); 
 	for(int i=0;display[i]!=0;i++)
 	{
 		while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter empty?
 		UART0->D = display[i];		// send to user
 	}
-	sprintf(display,"TURN ON MODULE%c%c%c",CRET,LF,LF); 
+	sprintf(display,"TURN ON MODULE"); 
 	for(int i=0;display[i]!=0;i++)
 	{
 		while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter empty?
 		UART0->D = display[i];		// send to user
 	}
-	
-	
-	// Start message display on LCD
-	LCD1602_Print("ALARM UNARMED!");
-	LCD1602_SetCursor(0,1);
-	LCD1602_Print("S1 TO CONTINUE");
-	while(PTA->PDIR&C1_MASK);		// Wait to press SW1
-	contact_vibration();		// Reduce contact vibration
-	LCD1602_ClearAll();
 	
 	SysTick_Config(SystemCoreClock/10 );	// SysTick counter start (interrupt every 100ms)
 	
@@ -336,89 +322,99 @@ int main (void)
 			case SW4:
 				SysTick_Config(1); // Stop the countdown
 				time_count = 0; // reset systick counter when user is not afk and using device
-				second_OK = 0;	
-				LCD1602_ClearAll();
-				LCD1602_Print("S1:SET CLOCK");
-				LCD1602_SetCursor(0,1);
-				LCD1602_Print("S2:TIME   S16:EX");
-				while(1)
+				second_OK = 0;
+				check = enter_passwd();
+				if (check==0)	//wrong password
 				{
-					keyread = read_keypad();
-					if (keyread==SW1) // set the time
+					LCD1602_ClearAll();
+					LCD1602_Print("WRONG PASSWORD");
+					DELAY(1000)
+				}
+				else if (check == 1) // Correct password then go to the bluetooth menu
+				{
+					LCD1602_ClearAll();
+					LCD1602_Print("S1:SET CLOCK");
+					LCD1602_SetCursor(0,1);
+					LCD1602_Print("S2:TIME   S16:EX");
+					while(1)
 					{
-						int hour=0,min=0,sec=0;
-						int mon_d,month,week_d = 1;
-						int year = 2021;
-						
-						LCD1602_ClearAll();
-						LCD1602_Print("S1:+ S2:-  S3:OK");
-						LCD1602_SetCursor(0,1);
-						LCD1602_Print("HOUR:");
-						hour = set_hour();
-						
-						LCD1602_Print("S1:+ S2:-  S3:OK");						
-						LCD1602_SetCursor(0,1);
-						LCD1602_Print("MIN:");
-						min = set_minute();
-						
-						LCD1602_Print("S1:+ S2:-  S3:OK");						
-						LCD1602_SetCursor(0,1);
-						LCD1602_Print("SEC:");
-						sec = set_second();
-						
-						LCD1602_Print("S1:+ S2:-  S3:OK");						
-						LCD1602_SetCursor(0,1);
-						LCD1602_Print("MON_D:");
-						mon_d = set_monthday();
-						
-						LCD1602_Print("S1:+ S2:-  S3:OK");
-						LCD1602_SetCursor(0,1);
-						LCD1602_Print("MON:");
-						month = set_month();
-						
-						LCD1602_Print("S1:+ S2:-  S3:OK");						
-						LCD1602_SetCursor(0,1);
-						LCD1602_Print("YEAR:");
-						year = set_year();
-						
-						LCD1602_Print("S1:+ S2:-  S3:OK");						
-						LCD1602_SetCursor(0,1);
-						LCD1602_Print("WEEK_D:");
-						week_d = set_weekday();
-							
-						time_write(hour, min, sec, mon_d, month, year, week_d); // Write to data structure of time 
-						time_read(RTC_Read()); // read actuall time 
-						break;
-					}
-					else if(keyread==SW2) // display time 
-					{
-						LCD1602_ClearAll();
-						while(1)
+						keyread = read_keypad();
+						if (keyread==SW1) // set the time
 						{
-							time_read(RTC_Read()); // read actuall time 
-								
-							sprintf(display,"%02d.%02d.%04dr",data.tm_mday,data.tm_mon+1,data.tm_year+1900);
-							LCD1602_SetCursor(0,0);
-							LCD1602_Print(display);
-							sprintf(display,"%02d:%02d:%02d",data.tm_hour,data.tm_min,data.tm_sec);
+							int hour=0,min=0,sec=0;
+							int mon_d,month,week_d = 1;
+							int year = 2021;
+							
+							LCD1602_ClearAll();
+							LCD1602_Print("S1:+ S2:-  S3:OK");
 							LCD1602_SetCursor(0,1);
-							LCD1602_Print(display);
+							LCD1602_Print("HOUR:");
+							hour = set_hour();
+							
+							LCD1602_Print("S1:+ S2:-  S3:OK");						
+							LCD1602_SetCursor(0,1);
+							LCD1602_Print("MIN:");
+							min = set_minute();
+							
+							LCD1602_Print("S1:+ S2:-  S3:OK");						
+							LCD1602_SetCursor(0,1);
+							LCD1602_Print("SEC:");
+							sec = set_second();
+							
+							LCD1602_Print("S1:+ S2:-  S3:OK");						
+							LCD1602_SetCursor(0,1);
+							LCD1602_Print("MON_D:");
+							mon_d = set_monthday();
+							
+							LCD1602_Print("S1:+ S2:-  S3:OK");
+							LCD1602_SetCursor(0,1);
+							LCD1602_Print("MON:");
+							month = set_month();
+							
+							LCD1602_Print("S1:+ S2:-  S3:OK");						
+							LCD1602_SetCursor(0,1);
+							LCD1602_Print("YEAR:");
+							year = set_year();
+							
+							LCD1602_Print("S1:+ S2:-  S3:OK");						
+							LCD1602_SetCursor(0,1);
+							LCD1602_Print("WEEK_D:");
+							week_d = set_weekday();
 								
-							keyread = read_keypad();
-							if (keyread==SW16) 		// Cancell
-							{
-								LCD1602_ClearAll();
-								break;
-							}
+							time_write(hour, min, sec, mon_d, month, year, week_d); // Write to data structure of time 
+							time_read(RTC_Read()); // read actuall time 
+							break;
 						}
-						break;
-					}
-					else if(keyread==SW16) // Exit from this menu
-					{
-						LCD1602_ClearAll();
-						break;
-					}
-				}//end while(1)
+						else if(keyread==SW2) // display time 
+						{
+							LCD1602_ClearAll();
+							while(1)
+							{
+								time_read(RTC_Read()); // read actuall time 
+									
+								sprintf(display,"%02d.%02d.%04dr",data.tm_mday,data.tm_mon+1,data.tm_year+1900);
+								LCD1602_SetCursor(0,0);
+								LCD1602_Print(display);
+								sprintf(display,"%02d:%02d:%02d",data.tm_hour,data.tm_min,data.tm_sec);
+								LCD1602_SetCursor(0,1);
+								LCD1602_Print(display);
+									
+								keyread = read_keypad();
+								if (keyread==SW16) 		// Cancell
+								{
+									LCD1602_ClearAll();
+									break;
+								}
+							}
+							break;
+						}
+						else if(keyread==SW16) // Exit from this menu
+						{
+							LCD1602_ClearAll();
+							break;
+						}
+					}//end while(1)
+				}
 				SysTick_Config(SystemCoreClock/10 );	// SysTick counter start (interrupt every 100ms)
 				break;
 		}//end switch
@@ -431,36 +427,8 @@ int main (void)
 			SysTick_Config(1); // Stop the countdown
 			time_count = 0; // reset systick counter when user is not afk and using device
 			second_OK = 0;	
-			if(too_long)
-			{
-				for(int i=0;Too_Long[i]!=0;i++)	// too long string
-				{
-					while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter ready?
-					UART0->D = Too_Long[i];
-				}
-				while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter ready?
-				UART0->D = LF;		// enter
-				while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter ready?
-				UART0->D = CRET;		// carriage return
-				too_long=0;
-			}
-			else
-			{
-				if(strcmp (rx_buf,ALARM_ON)==0)	// Arm alarm 
-					armed();
-				else
-				{
-					for(int i=0;Error[i]!=0;i++)	// wrong command
-					{
-						while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter ready?
-						UART0->D = Error[i];
-					}
-					while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter ready?
-					UART0->D = LF;		// enter
-					while(!(UART0->S1 & UART0_S1_TDRE_MASK));	// Is the transmitter ready?
-					UART0->D = CRET;		// carriage return
-				}
-			}
+			if(strcmp (rx_buf,ALARM_ON)==0)	// Arm alarm 
+				armed_user();
 			rx_buf_pos=0;
 			rx_FULL=0;	// consumed data
 			SysTick_Config(SystemCoreClock/10 );	// SysTick counter start (interrupt every 100ms)
