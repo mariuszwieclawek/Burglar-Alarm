@@ -78,7 +78,7 @@ I (klaw.h)(0x61DF311A)
 I (i2c.h)(0x5FBFDF5A)
 I (frdm_bsp.h)(0x5F90AA08)
 I (lcd1602.h)(0x5FC545E6)
-F (.\alarm.c)(0x61E7EB21)(--c99 -c --cpu Cortex-M0+ -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\_FRDM-KL05Z-IC:\Users\Mariusz\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Mariusz\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DMKL05Z32xxx4 -D_RTE_-o .\objects\alarm.o --omf_browse .\objects\alarm.crf --depend .\objects\alarm.d)
+F (.\alarm.c)(0x61EA8DB8)(--c99 -c --cpu Cortex-M0+ -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\_FRDM-KL05Z-IC:\Users\Mariusz\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Mariusz\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DMKL05Z32xxx4 -D_RTE_-o .\objects\alarm.o --omf_browse .\objects\alarm.crf --depend .\objects\alarm.d)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x602577DE)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x602577D8)
