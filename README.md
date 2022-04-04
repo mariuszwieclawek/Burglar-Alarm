@@ -10,7 +10,9 @@ hours (RTC). Using the application downloaded on the phone, which acts as a term
 bluetooth HC-06 can arm / disarm our alarm through our smartphone. The burglary signaling remained
 implemented on LEDs and siren (DDS generator).
 
-documentation: [documentation.pdf](https://github.com/mariuszwieclawek/Burglar-Alarm/files/8410375/documentation.pdf)
+# Documentation
+[documentation.pdf](https://github.com/mariuszwieclawek/Burglar-Alarm/files/8410375/documentation.pdf)
 
-How it works: https://youtu.be/KCsgrAGq1i4
+# How it works:
+https://youtu.be/KCsgrAGq1i4
 
