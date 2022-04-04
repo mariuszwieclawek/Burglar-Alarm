@@ -11,5 +11,6 @@ bluetooth HC-06 can arm / disarm our alarm through our smartphone. The burglary 
 implemented on LEDs and siren (DDS generator).
 
 documentation: [documentation.pdf](https://github.com/mariuszwieclawek/Burglar-Alarm/files/8410375/documentation.pdf)
+
 How it works: https://youtu.be/KCsgrAGq1i4
 
