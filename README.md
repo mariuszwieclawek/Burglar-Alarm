@@ -1,4 +1,5 @@
 # Burglar-Alarm
+Project is based on the FRDM-KL05Z development platform enabled by the Kinetis® L Series KL0x MCU family built on the Arm® Cortex®-M0+ processor.
 The theme of the project is a burglar alarm that uses a light sensor as a motion sensor.
 In addition, we use the accelerometer as a sensor that protects the object against an attempt to interfere with the device. Program menu
 controlled by the tact switch 4x4 keyboard and displayed on the LCD1602 display. Have been introduced
